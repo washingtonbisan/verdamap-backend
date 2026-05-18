@@ -1,0 +1,30 @@
+# =============================================================================
+# VerdaMap Backend — Python Dependencies
+# =============================================================================
+# Install with: pip install -r requirements.txt
+
+# Web framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# Database (async ORM)
+sqlalchemy==2.0.36
+aiosqlite==0.20.0        # SQLite driver — used for local development
+asyncpg==0.30.0          # PostgreSQL driver — used in production
+greenlet==3.1.1          # Required by SQLAlchemy async mode
+
+# For production PostgreSQL, also install:
+# asyncpg==0.30.0
+
+# Settings management
+pydantic-settings==2.6.1
+
+# HTTP client (async)
+httpx==0.28.0
+
+# Image processing
+numpy==2.1.3
+Pillow==11.0.0
+
+# Static file serving
+aiofiles==24.1.0
