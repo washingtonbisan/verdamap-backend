@@ -49,7 +49,7 @@ app = FastAPI(
 # =============================================================================
 # CORS — allow the frontend to call the API
 # =============================================================================
-origins = [o.strip() for o in settings.allowed_origins.split(",")]
+origins = [o.strip().rstrip("/") for o in settings.allowed_origins.split(",")]
 
 app.add_middleware(
     CORSMiddleware,
