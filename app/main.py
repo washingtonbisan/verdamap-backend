@@ -76,3 +76,15 @@ app.include_router(analysis_router)
 async def health_check():
     """Simple liveness check — returns 200 if the server is running."""
     return HealthCheckResponse(status="ok", version="1.0.0")
+
+
+@app.get("/debug/config", tags=["system"])
+async def debug_config():
+    """Temporary endpoint to verify env vars are loaded. Remove before final production."""
+    return {
+        "client_id_set": bool(settings.sentinelhub_client_id),
+        "client_id_prefix": settings.sentinelhub_client_id[:6] if settings.sentinelhub_client_id else "EMPTY",
+        "client_secret_set": bool(settings.sentinelhub_client_secret),
+        "client_secret_length": len(settings.sentinelhub_client_secret),
+        "allowed_origins": settings.allowed_origins,
+    }

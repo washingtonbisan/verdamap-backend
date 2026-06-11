@@ -28,6 +28,19 @@ class Settings(BaseSettings):
     # postgresql+asyncpg://user:pass@host:5432/dbname  ← production
     database_url: str = "sqlite+aiosqlite:///./verdamap.db"
 
+    @property
+    def database_url_fixed(self) -> str:
+        """
+        Automatically fix the database URL prefix.
+        Railway provides postgresql:// but asyncpg needs postgresql+asyncpg://
+        """
+        url = self.database_url
+        if url.startswith("postgresql://"):
+            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        elif url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql+asyncpg://", 1)
+        return url
+
     # ── Sentinel Hub ─────────────────────────────────────────────────────────
     # Get these from: https://apps.sentinel-hub.com/dashboard/#/account/settings
     # Click "OAuth clients" → "Create new"

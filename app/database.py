@@ -15,7 +15,7 @@ from app.config import get_settings
 settings = get_settings()
 
 # Build engine kwargs — SQLite doesn't support pool_size / max_overflow
-_is_sqlite = settings.database_url.startswith("sqlite")
+_is_sqlite = settings.database_url_fixed.startswith("sqlite")
 
 _engine_kwargs = {"echo": settings.debug}
 if not _is_sqlite:
@@ -26,7 +26,7 @@ if not _is_sqlite:
     })
 
 # Create the async engine
-engine = create_async_engine(settings.database_url, **_engine_kwargs)
+engine = create_async_engine(settings.database_url_fixed, **_engine_kwargs)
 
 # Session factory — call this to get a database session
 AsyncSessionLocal = async_sessionmaker(
