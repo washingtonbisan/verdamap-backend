@@ -328,11 +328,22 @@ class SentinelHubService:
         date_acquired = best["interval"]["from"][:10]
         health_pct = self._histogram_to_health(histogram)
 
+        def safe_float(val, default=0.0):
+            """Replace NaN/Infinity with a safe default."""
+            import math
+            try:
+                f = float(val)
+                if math.isnan(f) or math.isinf(f):
+                    return default
+                return f
+            except (TypeError, ValueError):
+                return default
+
         return {
-            "ndvi_mean":        round(float(ndvi_mean), 4),
-            "ndvi_min":         round(float(ndvi_min),  4),
-            "ndvi_max":         round(float(ndvi_max),  4),
-            "ndvi_std":         round(float(ndvi_std),  4),
+            "ndvi_mean":        round(safe_float(ndvi_mean, 0.0), 4),
+            "ndvi_min":         round(safe_float(ndvi_min, -1.0), 4),
+            "ndvi_max":         round(safe_float(ndvi_max,  1.0), 4),
+            "ndvi_std":         round(safe_float(ndvi_std,  0.0), 4),
             "cloud_cover":      cloud_cover,
             "date_acquired":    date_acquired,
             "health_percentage": health_pct,
